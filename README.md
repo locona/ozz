@@ -199,3 +199,13 @@ $1, $2 にそれぞれの値が入る.
 ```
 
 
+### Credentials Issuers
+
+
+1. noop
+受信したリクエストを変換せずに, そのまま転送する.
+`Authorization: basic` を　`X-User: <subject-id>` に変換したくない場合にするケースがある.
+
+
+2. id_token
+
