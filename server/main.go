@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/locona/snoopy/router"
+	"github.com/locona/ozz/server/router"
 )
 
 func main() {
