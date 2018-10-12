@@ -1,11 +1,11 @@
 [
   {
-    "id": "${OATHKEEPER_RESOURCE_PREFIX}rules:ozz:healthcheck:list",
+    "id": "resources:oathkeeper:rules:ozz:healthcheck",
     "upstream": {
       "url": "http://localhost:9999/"
     },
     "match": {
-      "url": "${OATHKEEPER_PROXY_URL}/health",
+      "url": "http://localhost:4455/health",
       "methods": [
         "GET"
       ]
@@ -15,20 +15,19 @@
         "handler": "oauth2_introspection",
         "config": {
           "required_scope": [
-            "hydra.warden.groups"
+            "healthcheck"
           ]
         }
       }
     ],
     "authorizer": {
-      "handler": "keto_warden",
-      "config": {
-        "required_resource": "${HYDRA_RESOURCE_PREFIX}warden:groups",
-        "required_action": "${HYDRA_ACTION_PREFIX}list"
-      }
+      "handler": "allow"
     },
     "credentials_issuer": {
-      "handler": "noop"
+      "handler": "id_token",
+      "config": {
+         "aud": []
+      }
     }
   }
 ]
