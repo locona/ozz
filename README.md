@@ -123,4 +123,79 @@ Option:
 
 ### Authorizers
 authenticator から返された`subject`を要求されたアクションを実行できるかチェックする.
+以下のhandler を使用することができる.
+
+1. allow: 全ての要求を通す.
+```
+    "authorizer": {
+        "handler": "allow"
+    }
+```
+2. deny: 全てのリクエストを拒否する.
+```
+    "authorizer": {
+        "handler": "deny"
+    }
+
+```
+
+3. keto_warden: keto api を使用して, ACLを実行.
+`AUTHORIZER_KETO_WARDEN_KETO_URL` を設定する必要がある.
+仮に設定されていなかった場合は, 無効になる.
+
+２つにconfiguration が設定可能.
+* required_action
+* required_resource
+
+```
+"authorizer": {
+    "handler": "keto_warden",
+    "config": {
+        "required_action": "..."
+        "required_resource": "..."
+    }
+}
+```
+
+以下のように可変のパスにも対応可能.
+```
+"match": {
+    "url": "http://my-app/api/users/<[0-9]+>/<[a-zA-Z]+>",
+    "methods": ["GET"]
+},
+```
+
+$1, $2 にそれぞれの値が入る.
+```
+"config": {
+    "required_action": "my:action:$1",
+    "required_resource": "my:resource:$2:foo:$1"
+}
+```
+
+
+```
+{
+    "id": "some-id",
+    "upstream": {
+        "url": "http://my-backend-service"
+    },
+    "match": {
+        "url": "http://my-app/api/users/<[0-9]+>/<[a-zA-Z]+>",
+        "methods": [
+            "GET"
+        ]
+    },
+    "authenticators": [/* ... */],
+    "authorizer": {
+        "handler": "keto_warden",
+        "config": {
+            "required_action": "my:action:$1",
+            "required_resource": "my:resource:$2:foo:$1"
+        }
+    }
+    /* ... */
+}
+```
+
 
