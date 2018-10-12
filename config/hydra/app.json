@@ -2,7 +2,7 @@
   "client_id": "consumer-app",
   "description": "This client will be used by the exemplary consumer application.",
   "client_secret": "consumer-secret",
-  "scope": "openid offline healthcheck",
+  "scope": "openid offline healthcheck hydra.clients",
   "grant_types": ["client_credentials"],
   "response_types": ["token"]
 }

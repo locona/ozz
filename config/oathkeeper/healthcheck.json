@@ -2,22 +2,17 @@
   {
     "id": "resources:oathkeeper:rules:ozz:healthcheck",
     "upstream": {
-      "url": "http://localhost:9999/"
+      "url": "http://host.docker.internal:9999/"
     },
     "match": {
-      "url": "http://localhost:4455/health",
+      "url": "http://localhost:4455/sample",
       "methods": [
         "GET"
       ]
     },
     "authenticators": [
       {
-        "handler": "oauth2_introspection",
-        "config": {
-          "required_scope": [
-            "healthcheck"
-          ]
-        }
+        "handler": "oauth2_introspection"
       }
     ],
     "authorizer": {
@@ -26,7 +21,7 @@
     "credentials_issuer": {
       "handler": "id_token",
       "config": {
-         "aud": []
+        "aud": []
       }
     }
   }
