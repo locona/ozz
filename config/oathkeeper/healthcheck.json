@@ -1,0 +1,34 @@
+[
+  {
+    "id": "${OATHKEEPER_RESOURCE_PREFIX}rules:ozz:healthcheck:list",
+    "upstream": {
+      "url": "http://localhost:9999/"
+    },
+    "match": {
+      "url": "${OATHKEEPER_PROXY_URL}/health",
+      "methods": [
+        "GET"
+      ]
+    },
+    "authenticators": [
+      {
+        "handler": "oauth2_introspection",
+        "config": {
+          "required_scope": [
+            "hydra.warden.groups"
+          ]
+        }
+      }
+    ],
+    "authorizer": {
+      "handler": "keto_warden",
+      "config": {
+        "required_resource": "${HYDRA_RESOURCE_PREFIX}warden:groups",
+        "required_action": "${HYDRA_ACTION_PREFIX}list"
+      }
+    },
+    "credentials_issuer": {
+      "handler": "noop"
+    }
+  }
+]
