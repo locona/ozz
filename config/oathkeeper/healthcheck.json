@@ -5,7 +5,7 @@
       "url": "http://host.docker.internal:9999/"
     },
     "match": {
-      "url": "http://localhost:4455/session/signup",
+      "url": "http://localhost:24455/session/signup",
       "methods": [
         "POST"
       ]
@@ -31,7 +31,7 @@
       "url": "http://host.docker.internal:9999/"
     },
     "match": {
-      "url": "http://localhost:4455/health/alive",
+      "url": "http://localhost:24455/health/alive",
       "methods": [
         "GET"
       ]
@@ -57,7 +57,7 @@
       "url": "http://host.docker.internal:9999/"
     },
     "match": {
-      "url": "http://localhost:4455/health/ready",
+      "url": "http://localhost:24455/health/ready",
       "methods": [
         "GET"
       ]

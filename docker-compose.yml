@@ -50,8 +50,8 @@ services:
     links:
       - postgresd:postgresd
     ports:
-      - "4444:4444"
-      - "4445:4445"
+      - "24444:4444"
+      - "24445:4445"
     depends_on:
       - hydra-migrate
     command:
@@ -71,7 +71,7 @@ services:
     links:
       - postgresd:postgresd
     ports:
-      - "4455:4455"
+      - "24455:4455"
     depends_on:
       - oathkeeper-api
       - hydra
@@ -104,7 +104,7 @@ services:
     links:
       - postgresd:postgresd
     ports:
-      - "4456:4456"
+      - "24456:4456"
     depends_on:
       - hydra-migrate
     command:
@@ -134,7 +134,7 @@ services:
     links:
       - postgresd:postgresd
     ports:
-      - "4466:4466"
+      - "24466:4466"
     depends_on:
       - hydra
       - keto-migrate
@@ -147,6 +147,56 @@ services:
 
   postgresd:
     image: postgres:9.6
+    ports:
+      - "24456:4456"
+    depends_on:
+      - hydra-migrate
+    command:
+      serve api
+    environment:
+      - LOG_LEVEL=debug
+      - PORT=4456
+      - DATABASE_URL=postgres://dbuser:secret@postgresd:5432/accesscontroldb?sslmode=disable
+      - ISSUER_URL=http://localhost:4455/
+      - AUTHORIZER_KETO_WARDEN_KETO_URL=http://keto:4466
+      - CREDENTIALS_ISSUER_ID_TOKEN_ALGORITHM=ory-hydra
+      - CREDENTIALS_ISSUER_ID_TOKEN_HYDRA_JWK_SET_ID=resources:hydra:jwk:oathkeeper
+      - CREDENTIALS_ISSUER_ID_TOKEN_HYDRA_ADMIN_URL=http://hydra:4445
+      - CREDENTIALS_ISSUER_ID_TOKEN_LIFESPAN=1h
+      - CREDENTIALS_ISSUER_ID_TOKEN_ISSUER=http://oathkeeper-api:4456
+      - CREDENTIALS_ISSUER_ID_TOKEN_JWK_REFRESH_INTERVAL=30m
+      - AUTHENTICATOR_OAUTH2_CLIENT_CREDENTIALS_TOKEN_URL=http://hydra:4444/oauth2/token
+      - AUTHENTICATOR_OAUTH2_INTROSPECTION_CLIENT_ID=subjects:hydra:clients:oathkeeper-client
+      - AUTHENTICATOR_OAUTH2_INTROSPECTION_CLIENT_SECRET=dummy-oathkeeper-secret
+      - AUTHENTICATOR_OAUTH2_INTROSPECTION_TOKEN_URL=http://hydra:4444/oauth2/token
+      - AUTHENTICATOR_OAUTH2_INTROSPECTION_URL=http://hydra:4445/oauth2/introspect
+      - AUTHENTICATOR_OAUTH2_INTROSPECTION_SCOPE=healthcheck
+    restart: on-failure
+
+  keto:
+    image: oryd/keto:v1.0.0-beta.9
+    links:
+      - postgresd:postgresd
+    ports:
+      - "24466:4466"
+    depends_on:
+      - hydra
+      - keto-migrate
+    environment:
+      - LOG_LEVEL=debug
+      - DATABASE_URL=postgres://dbuser:secret@postgresd:5432/accesscontroldb?sslmode=disable
+      - AUTHENTICATOR_OAUTH2_CLIENT_CREDENTIALS_TOKEN_URL=http://hydra:4444/oauth2/token
+      - AUTHENTICATOR_OAUTH2_INTROSPECTION_URL=http://hydra:4445/oauth2/introspect
+    restart: on-failure
+
+  postgresd:
+    image: postgres:9.6
+    environment:
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=accesscontroldb
+    ports:
+      - "25432:5432"
     environment:
       - POSTGRES_USER=dbuser
       - POSTGRES_PASSWORD=secret

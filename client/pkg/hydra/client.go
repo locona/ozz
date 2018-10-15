@@ -32,8 +32,8 @@ type Client struct {
 
 func New() (*Client, error) {
 	sdk, err := hydra.NewSDK(&hydra.Configuration{
-		AdminURL:     "http://localhost:4445",
-		PublicURL:    "http://localhost:4444",
+		AdminURL:     "http://localhost:24445",
+		PublicURL:    "http://localhost:24444",
 		ClientID:     clientID,
 		ClientSecret: clientSecret,
 		Scopes:       []string{"openid", "offline", "healthcheck"},
@@ -74,7 +74,7 @@ func (cli *Client) Token() (*oauth2.Token, error) {
 	oauthConfig := clientcredentials.Config{
 		ClientID:     userClientID,
 		ClientSecret: userClientSecret,
-		TokenURL:     "http://localhost:4444/oauth2/token",
+		TokenURL:     "http://localhost:24444/oauth2/token",
 	}
 	return oauthConfig.Token(ctx)
 }

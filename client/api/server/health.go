@@ -15,7 +15,7 @@ func Alive(ctx *gin.Context) {
 		return
 	}
 
-	url := "http://localhost:4455/health/alive"
+	url := "http://localhost:24455/health/alive"
 	resp, err := get(url, token)
 	defer resp.Body.Close()
 	if resp.StatusCode >= 400 || err != nil {
@@ -36,7 +36,7 @@ func Ready(ctx *gin.Context) {
 		return
 	}
 
-	url := "http://localhost:4455/health/ready"
+	url := "http://localhost:24455/health/ready"
 	resp, err := get(url, token)
 	defer resp.Body.Close()
 	if resp.StatusCode >= 400 || err != nil {

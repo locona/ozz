@@ -16,9 +16,9 @@ server:
 
 .PHONY: oathkeeper.rules.import
 oathkeeper.rules.import:
-	-oathkeeper rules import --endpoint=http://localhost:4456 config/oathkeeper/healthcheck.json
+	-oathkeeper rules import --endpoint=http://localhost:24456 config/oathkeeper/healthcheck.json
 
 .PHONY: hydra.clients.import
 hydra.clients.import:
-	-hydra clients import --endpoint=http://localhost:4445 config/hydra/app.json
-	-hydra clients import --endpoint=http://localhost:4445 config/hydra/oathkeeper.json
+	-hydra clients import --endpoint=http://localhost:24445 config/hydra/app.json
+	-hydra clients import --endpoint=http://localhost:24445 config/hydra/oathkeeper.json
