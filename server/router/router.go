@@ -1,11 +1,14 @@
 package router
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/locona/ozz/server/api"
+)
 
-func HealthCheck(app *gin.Engine) *gin.Engine {
-	app.GET("/sample", func(ctx *gin.Context) {
-		ctx.JSON(200, gin.H{"message": "ok"})
-	})
-
-	return app
+func V1(app *gin.Engine) {
+	{
+		h := app.Group("/health")
+		h.GET("/alive", api.Alive)
+		h.GET("/ready", api.Ready)
+	}
 }

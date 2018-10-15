@@ -1,11 +1,37 @@
 [
   {
-    "id": "resources:oathkeeper:rules:ozz:healthcheck",
+    "id": "resources:oathkeeper:rules:ozz:health:alive",
     "upstream": {
       "url": "http://host.docker.internal:9999/"
     },
     "match": {
-      "url": "http://localhost:4455/sample",
+      "url": "http://localhost:4455/health/alive",
+      "methods": [
+        "GET"
+      ]
+    },
+    "authenticators": [
+      {
+        "handler": "oauth2_introspection"
+      }
+    ],
+    "authorizer": {
+      "handler": "allow"
+    },
+    "credentials_issuer": {
+      "handler": "id_token",
+      "config": {
+        "aud": []
+      }
+    }
+  },
+  {
+    "id": "resources:oathkeeper:rules:ozz:health:ready",
+    "upstream": {
+      "url": "http://host.docker.internal:9999/"
+    },
+    "match": {
+      "url": "http://localhost:4455/health/ready",
       "methods": [
         "GET"
       ]

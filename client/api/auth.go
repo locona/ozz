@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/locona/ozz/client/infra"
 	"github.com/locona/ozz/client/pkg/hydra"
 )
 
@@ -18,6 +19,11 @@ func GetAuth(ctx *gin.Context) {
 	token, err := cli.Token()
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": errors.New("invalid")})
+		return
+	}
+	cache := hydra.NewCache(infra.Redis)
+	if err := cache.Set(token.AccessToken); err != nil {
+		ctx.JSON(http.StatusBadRequest, nil)
 		return
 	}
 

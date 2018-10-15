@@ -10,7 +10,7 @@ func main() {
 	api.HandleMethodNotAllowed = true
 	api.Use(gin.Recovery())
 	api.Use(gin.Logger())
-	router.HealthCheck(api)
+	router.V1(api)
 
 	api.Run(":9999")
 }

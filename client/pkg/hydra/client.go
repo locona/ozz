@@ -12,8 +12,8 @@ import (
 )
 
 const (
-	clientID     = "consumer-app"
-	clientSecret = "consumer-secret"
+	clientID     = "subjects:hydra:clients:oathkeeper-client"
+	clientSecret = "dummy-oathkeeper-secret"
 )
 
 const (
@@ -36,6 +36,7 @@ func New() (*Client, error) {
 		PublicURL:    "http://localhost:4444",
 		ClientID:     clientID,
 		ClientSecret: clientSecret,
+		Scopes:       []string{"openid", "offline", "healthcheck"},
 	})
 
 	if err != nil {
@@ -47,12 +48,13 @@ func New() (*Client, error) {
 
 func (cli *Client) CreateClient() error {
 	_, _, err := cli.sdk.CreateOAuth2Client(swagger.OAuth2Client{
-		Owner:        "reckoner",
-		ClientId:     userClientID,
-		ClientName:   "Sample Client 01",
-		ClientSecret: userClientSecret,
-		GrantTypes:   []string{"client_credentials"},
-		Scope:        "healthcheck",
+		Owner:         "reckoner",
+		ClientId:      userClientID,
+		ClientName:    "Sample Client 01",
+		ClientSecret:  userClientSecret,
+		GrantTypes:    []string{"client_credentials"},
+		Scope:         "openid,offline,healthcheck",
+		ResponseTypes: []string{"token"},
 	})
 
 	if err != nil {

@@ -26,8 +26,28 @@
 
 
 [[constraint]]
+  name = "github.com/garyburd/redigo"
+  version = "1.6.0"
+
+[[constraint]]
+  name = "github.com/gin-gonic/gin"
+  version = "1.3.0"
+
+[[constraint]]
+  name = "github.com/joho/godotenv"
+  version = "1.3.0"
+
+[[constraint]]
+  name = "github.com/kelseyhightower/envconfig"
+  version = "1.3.0"
+
+[[constraint]]
+  name = "github.com/ory/hydra"
+  version = "1.0.0-beta.9"
+
+[[constraint]]
   branch = "master"
-  name = "github.com/locona/snoopy"
+  name = "golang.org/x/oauth2"
 
 [prune]
   go-tests = true
