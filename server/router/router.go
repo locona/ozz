@@ -11,4 +11,9 @@ func V1(app *gin.Engine) {
 		h.GET("/alive", api.Alive)
 		h.GET("/ready", api.Ready)
 	}
+
+	{
+		sess := app.Group("/session")
+		sess.POST("/signup")
+	}
 }

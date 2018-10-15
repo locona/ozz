@@ -1,5 +1,31 @@
 [
   {
+    "id": "resources:oathkeeper:rules:ozz:session:signup",
+    "upstream": {
+      "url": "http://host.docker.internal:9999/"
+    },
+    "match": {
+      "url": "http://localhost:4455/session/signup",
+      "methods": [
+        "POST"
+      ]
+    },
+    "authenticators": [
+      {
+        "handler": "noop"
+      }
+    ],
+    "authorizer": {
+      "handler": "allow"
+    },
+    "credentials_issuer": {
+      "handler": "id_token",
+      "config": {
+        "aud": []
+      }
+    }
+  },
+  {
     "id": "resources:oathkeeper:rules:ozz:health:alive",
     "upstream": {
       "url": "http://host.docker.internal:9999/"
